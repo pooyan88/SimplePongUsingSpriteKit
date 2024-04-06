@@ -10,6 +10,10 @@ import GameplayKit
 
 class GameScene: SKScene {
     
+    enum ImpulseState {
+        case startGame, mainGoals, enemyGoals
+    }
+    
     var ball = SKSpriteNode()
     var mainPaddle = SKSpriteNode()
     var enemyPaddle = SKSpriteNode()
@@ -106,13 +110,23 @@ extension GameScene {
         ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0) // force stop the ball
         if winner == mainPaddle {
             score[0] += 1
-            ball.physicsBody?.applyImpulse(CGVector(dx: -5, dy: -5))
+            moveBallTo(loser: enemyPaddle)
         } else if winner == enemyPaddle {
             score[1] += 1
-            ball.physicsBody?.applyImpulse(CGVector(dx: 5, dy: 5))
+            moveBallTo(loser: mainPaddle)
         }
         updateLabels()
         print(score)
+    }
+    
+    private func moveBallTo(loser: SKSpriteNode) {
+        if loser == mainPaddle {
+            let startPoint = CGPoint(x: 0, y: mainPaddle.position.y + 25)
+            ball.position = startPoint
+        } else if loser == enemyPaddle {
+            let startPoint = CGPoint(x: 0, y: enemyPaddle.position.y - 25)
+            ball.position = startPoint
+        }
     }
     
     private func updateLabels() {
@@ -146,10 +160,10 @@ extension GameScene: SCNPhysicsContactDelegate, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         enemyPaddle.run(SKAction.moveTo(x: ball.position.x, duration: 0.2))
         
-        if ball.position.y <= mainPaddle.position.y - 70 {
+        if ball.position.y <= mainPaddle.position.y - mainPaddle.frame.height {
             showEffectForScore(scorer: enemyPaddle)
             addScore(winner: enemyPaddle)
-        } else if ball.position.y >= enemyPaddle.position.y + 70 {
+        } else if ball.position.y >= enemyPaddle.position.y + enemyPaddle.frame.height {
             showEffectForScore(scorer: mainPaddle)
             addScore(winner: mainPaddle)
         }
