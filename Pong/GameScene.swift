@@ -19,6 +19,7 @@ class GameScene: SKScene {
     var enemyPaddle = SKSpriteNode()
     var mainScoreLabel = SKLabelNode()
     var enemyScoreLabel = SKLabelNode()
+    var impulseState: ImpulseState?
     var score: [Int] = []
     
     override func didMove(to view: SKView) {
@@ -43,14 +44,15 @@ extension GameScene {
         setupEnemyPaddle()
         setupMainPaddle()
         setupBall()
-        startGame()
+        setScore()
+        startGame(state: .startGame)
     }
     
     private func createWall() {
         let width = UIScreen.main.bounds.width
         let height = UIScreen.main.bounds.height
         let wallSize = CGSize(width: width, height: height)
-        let wallColor = UIColor.red
+        let wallColor = UIColor.clear
         let wall = SKSpriteNode(color: .clear, size: wallSize)
         wall.drawBorder(color: wallColor, width: 2)
         wall.position = CGPoint(x: 0, y: 0)
@@ -84,11 +86,28 @@ extension GameScene {
 // MARK: - Game Actions
 extension GameScene {
     
-    private func startGame() {
+    private func setScore() {
         score = [0, 0]
         mainScoreLabel.text = "0"
         enemyScoreLabel.text = "0"
-        ball.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
+    }
+    
+    private func startGame(state: ImpulseState) {
+        switch state {
+        case .enemyGoals:
+            impulseState = .enemyGoals
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.ball.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
+            }
+        case .mainGoals:
+            impulseState = .mainGoals
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.ball.physicsBody?.applyImpulse(CGVector(dx: -10, dy: -10))
+            }
+        case .startGame:
+            impulseState = .startGame
+            ball.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
+        }
     }
     
     private func showEffectForScore(scorer: SKSpriteNode) {
@@ -111,9 +130,11 @@ extension GameScene {
         if winner == mainPaddle {
             score[0] += 1
             moveBallTo(loser: enemyPaddle)
+            startGame(state: .mainGoals)
         } else if winner == enemyPaddle {
             score[1] += 1
             moveBallTo(loser: mainPaddle)
+            startGame(state: .enemyGoals)
         }
         updateLabels()
         print(score)
@@ -121,10 +142,10 @@ extension GameScene {
     
     private func moveBallTo(loser: SKSpriteNode) {
         if loser == mainPaddle {
-            let startPoint = CGPoint(x: 0, y: mainPaddle.position.y + 25)
+            let startPoint = CGPoint(x: mainPaddle.position.x, y: mainPaddle.position.y + 20)
             ball.position = startPoint
         } else if loser == enemyPaddle {
-            let startPoint = CGPoint(x: 0, y: enemyPaddle.position.y - 25)
+            let startPoint = CGPoint(x: enemyPaddle.position.x, y: enemyPaddle.position.y - 20)
             ball.position = startPoint
         }
     }
@@ -158,7 +179,7 @@ extension GameScene: SCNPhysicsContactDelegate, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        enemyPaddle.run(SKAction.moveTo(x: ball.position.x, duration: 0.2))
+        enemyPaddle.run(SKAction.moveTo(x: ball.position.x, duration: 0.002))
         
         if ball.position.y <= mainPaddle.position.y - mainPaddle.frame.height {
             showEffectForScore(scorer: enemyPaddle)
