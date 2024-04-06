@@ -15,6 +15,8 @@
 		E052A0722BBBFE3E00852938 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E052A0712BBBFE3E00852938 /* Base */; };
 		E052A0742BBBFE3E00852938 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E052A0732BBBFE3E00852938 /* Assets.xcassets */; };
 		E052A0772BBBFE3E00852938 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E052A0762BBBFE3E00852938 /* Base */; };
+		E09052D12BBD809E004E4BE9 /* magic.sks in Resources */ = {isa = PBXBuildFile; fileRef = E09052D02BBD809E004E4BE9 /* magic.sks */; };
+		E09052D32BBD834B004E4BE9 /* fire.sks in Resources */ = {isa = PBXBuildFile; fileRef = E09052D22BBD834B004E4BE9 /* fire.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,8 @@
 		E052A0712BBBFE3E00852938 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E052A0732BBBFE3E00852938 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E052A0762BBBFE3E00852938 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E09052D02BBD809E004E4BE9 /* magic.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = magic.sks; sourceTree = "<group>"; };
+		E09052D22BBD834B004E4BE9 /* fire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = fire.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,8 @@
 				E052A0702BBBFE3E00852938 /* Main.storyboard */,
 				E052A0732BBBFE3E00852938 /* Assets.xcassets */,
 				E052A0752BBBFE3E00852938 /* LaunchScreen.storyboard */,
+				E09052D02BBD809E004E4BE9 /* magic.sks */,
+				E09052D22BBD834B004E4BE9 /* fire.sks */,
 			);
 			path = Pong;
 			sourceTree = "<group>";
@@ -132,6 +138,8 @@
 				E052A0692BBBFE3D00852938 /* GameScene.sks in Resources */,
 				E052A0722BBBFE3E00852938 /* Base in Resources */,
 				E052A0742BBBFE3E00852938 /* Assets.xcassets in Resources */,
+				E09052D32BBD834B004E4BE9 /* fire.sks in Resources */,
+				E09052D12BBD809E004E4BE9 /* magic.sks in Resources */,
 				E052A06B2BBBFE3D00852938 /* Actions.sks in Resources */,
 				E052A0772BBBFE3E00852938 /* Base in Resources */,
 			);
@@ -306,6 +314,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -334,6 +343,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
