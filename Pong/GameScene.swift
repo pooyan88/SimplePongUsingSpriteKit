@@ -20,16 +20,21 @@ class GameScene: SKScene {
     var enemyPaddle = SKSpriteNode()
     var mainScoreLabel = SKLabelNode()
     var enemyScoreLabel = SKLabelNode()
+    var isBallOnMove: Bool {
+        return ball.physicsBody?.velocity != .zero
+    }
     var paddleContactCounter = 0 {
         didSet {
             if paddleContactCounter.isMultiple(of: 10) {
                 self.physicsWorld.speed += 0.2
+                setupBallEffects()
             }
         }
     }
     var score: [Int] = [] {
         didSet {
             self.physicsWorld.speed = 1
+            setupBallEffects()
         }
     }
     
@@ -85,12 +90,56 @@ extension GameScene {
     }
     
     private func setupBall() {
+        ball.removeAllChildren()
         ball = self.childNode(withName: "ball") as! SKSpriteNode
-        let particle = SKEmitterNode(fileNamed: "magic")!
-        particle.targetNode = self
-        ball.addChild(particle)
+        ball.texture = SKTexture(image: UIImage(named: "ball2")!)
+    }
+    
+    private func addParticleToBallWhileMoving() {
+        switch self.physicsWorld.speed {
+        case 1.0:
+            setupBall()
+        case 1...1.5:
+            addWhiteParticleToBall()
+        case 1.5...2.0:
+            addFireParticleToBall()
+        case 2...:
+            addExplosiveParticleToBall()
+        default:
+            setupBall()
+        }
+    }
+    
+    private func addWhiteParticleToBall() {
+        ball.texture = nil
+        let snow = SKEmitterNode(fileNamed: "snow")!
+        snow.targetNode = self
+        ball.removeAllChildren()
+        ball.addChild(snow)
+    }
+    
+    private func addFireParticleToBall() {
+        ball.texture = nil
         let fire = SKEmitterNode(fileNamed: "fire")!
+        fire.targetNode = self
+        ball.removeAllChildren()
         ball.addChild(fire)
+    }
+    
+    private func addExplosiveParticleToBall() {
+        ball.texture = nil
+        let spark = SKEmitterNode(fileNamed: "magic")!
+        spark.targetNode = self
+        ball.removeAllChildren()
+        ball.addChild(spark)
+    }
+    
+    private func setupBallEffects() {
+        if isBallOnMove {
+            addParticleToBallWhileMoving()
+        } else {
+            setupBall()
+        }
     }
 }
 
@@ -157,6 +206,8 @@ extension GameScene {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self.startGame(state: .enemyGoals)
             }
+        } else {
+            print("unsupported score state")
         }
         updateLabels()
         print(score)
@@ -221,7 +272,8 @@ extension GameScene: SCNPhysicsContactDelegate, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        enemyPaddle.run(SKAction.moveTo(x: ball.position.x, duration: 0.05))
+        enemyPaddle.run(SKAction.moveTo(x: ball.position.x, duration: 0))
+        mainPaddle.run(SKAction.moveTo(x: ball.position.x, duration: 0)) // MARK: remove before commit
         scoreAction()
     }
 }
